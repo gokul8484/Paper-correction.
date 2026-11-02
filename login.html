@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Login · SmartEval{% endblock %}
+{% block content %}
+<div class="auth card">
+  <h1>🎓 SmartEval</h1>
+  <p class="muted">AI-assisted handwritten exam correction</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="{{ csrf_token }}">
+    <label>Username<input name="username" required autofocus></label>
+    <label>Password<input name="password" type="password" required></label>
+    <button class="btn">Log in</button>
+  </form>
+  <p class="muted small">New teacher? <a href="{{ url_for('main.register') }}">Create account</a></p>
+  {% if config.DEMO_MODE %}<p class="hint">Demo login: <b>{{ config.DEMO_TEACHER_USER }}</b> / <b>{{ config.DEMO_TEACHER_PASSWORD }}</b></p>{% endif %}
+</div>
+{% endblock %}

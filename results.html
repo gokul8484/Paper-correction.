@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% block title %}Results · SmartEval{% endblock %}
+{% block content %}
+<div class="row"><h1>Evaluation results</h1>
+<div class="score">{{ '%g' % total }} / {{ '%g' % max_total }}</div></div>
+<p class="muted">{{ sheet.student_name }} ({{ sheet.roll_no }}) · {{ exam.title }} · <span class="badge {{ sheet.status }}">{{ sheet.status }}</span></p>
+<p class="hint">Score = 50% meaning similarity + 35% keywords + 15% completeness. Edit marks if needed, then approve.</p>
+<form method="post">
+  <input type="hidden" name="csrf" value="{{ csrf_token }}">
+  {% for r in rows %}
+  <div class="card">
+    <div class="row"><h3>Q{{ r.number }}. {{ r.question }}</h3>
+      <label class="marks">Marks <input type="number" name="marks_{{ r.id }}" min="0" max="{{ r.max_marks }}" step="0.5"
+        value="{{ '%g' % (r.final_marks if r.final_marks is not none else r.ai_marks) }}"> / {{ '%g' % r.max_marks }}</label></div>
+    <p><b>Student answer:</b> {{ r.text or '— not answered —' }}</p>
+    <div class="bars">
+      <div>Semantic <b>{{ (r.semantic*100)|round|int }}%</b><div class="bar"><i style="width:{{ r.semantic*100 }}%"></i></div></div>
+      <div>Keywords <b>{{ (r.keyword*100)|round|int }}%</b><div class="bar"><i style="width:{{ r.keyword*100 }}%"></i></div></div>
+      <div>Completeness <b>{{ (r.completeness*100)|round|int }}%</b><div class="bar"><i style="width:{{ r.completeness*100 }}%"></i></div></div>
+    </div>
+    <p><span class="tag ok">Matched:</span> {{ r.matched or '—' }}</p>
+    <p><span class="tag bad">Missing:</span> {{ r.missing or '—' }}</p>
+    <p class="muted">💡 {{ r.feedback }} (AI suggested {{ '%g' % r.ai_marks }})</p>
+  </div>
+  {% endfor %}
+  <button class="btn">✔ Approve marks</button>
+  <a class="btn secondary" href="{{ url_for('main.review', sheet_id=sheet.id) }}">← Edit OCR text</a>
+</form>
+{% endblock %}

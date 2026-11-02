@@ -1,0 +1,10 @@
+# Lightweight install (works on Render free tier). Demo OCR + light evaluator.
+Flask==3.0.3
+gunicorn==22.0.0
+python-dotenv==1.0.1
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+Pillow==10.4.0
+PyMuPDF==1.24.9
+reportlab==4.2.2
+scikit-learn==1.5.1

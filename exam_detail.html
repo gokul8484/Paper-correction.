@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block title %}{{ exam.title }} · SmartEval{% endblock %}
+{% block content %}
+<div class="row"><h1>{{ exam.title }} <small class="muted">{{ exam.subject }}</small></h1>
+<div>
+  <a class="btn" href="{{ url_for('main.upload', exam_id=exam.id) }}">Upload answer sheet</a>
+  <a class="btn secondary" href="{{ url_for('main.export_csv', exam_id=exam.id) }}">Download CSV</a>
+</div></div>
+<div class="card"><h2>Questions (total {{ '%g' % max_total }} marks)</h2>
+{% for q in questions %}<details><summary>Q{{ q.number }}. {{ q.text }} <span class="badge">{{ '%g' % q.max_marks }} marks</span></summary>
+<p><b>Reference:</b> {{ q.reference_answer }}</p><p><b>Keywords:</b> {{ q.keywords or '—' }}</p></details>{% endfor %}</div>
+<div class="card"><h2>Answer sheets</h2>
+{% if sheets %}<div class="table-wrap"><table>
+<tr><th>Roll</th><th>Student</th><th>Total</th><th>Status</th><th></th></tr>
+{% for s in sheets %}<tr><td>{{ s.roll_no }}</td><td>{{ s.student_name }}</td>
+<td>{{ '%g' % totals[s.id][0] }} / {{ '%g' % max_total }}</td><td><span class="badge {{ s.status }}">{{ s.status }}</span></td>
+<td><a href="{{ url_for('main.review', sheet_id=s.id) }}">OCR</a> ·
+<a href="{{ url_for('main.results', sheet_id=s.id) }}">Results</a> ·
+<a href="{{ url_for('main.marksheet', sheet_id=s.id) }}">Marksheet</a></td></tr>{% endfor %}
+</table></div>{% else %}<p class="muted">No sheets yet.</p>{% endif %}</div>
+<form method="post" action="{{ url_for('main.exam_delete', exam_id=exam.id) }}" data-confirm="Delete this exam and all its sheets?">
+<input type="hidden" name="csrf" value="{{ csrf_token }}"><button class="btn danger">Delete exam</button></form>
+{% endblock %}

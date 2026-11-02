@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Marksheet · SmartEval{% endblock %}
+{% block content %}
+<div class="row"><h1>Student marksheet</h1>
+<div><a class="btn" href="{{ url_for('main.marksheet_pdf', sheet_id=sheet.id) }}">Download PDF</a>
+<a class="btn secondary" href="{{ url_for('main.export_csv', exam_id=exam.id) }}">Exam CSV</a></div></div>
+<div class="card">
+  <p><b>Student:</b> {{ sheet.student_name }} &nbsp; <b>Roll:</b> {{ sheet.roll_no }}</p>
+  <p><b>Exam:</b> {{ exam.title }} ({{ exam.subject }}) &nbsp; <span class="badge {{ sheet.status }}">{{ sheet.status }}</span></p>
+  <div class="table-wrap"><table>
+    <tr><th>Q</th><th>Marks</th><th>Max</th><th>Feedback</th></tr>
+    {% for r in rows %}<tr><td>Q{{ r.number }}</td><td>{{ '%g' % final_mark(r) }}</td><td>{{ '%g' % r.max_marks }}</td><td>{{ r.feedback }}</td></tr>{% endfor %}
+    <tr class="total"><td>Total</td><td>{{ '%g' % total }}</td><td>{{ '%g' % max_total }}</td><td></td></tr>
+  </table></div>
+</div>
+{% endblock %}

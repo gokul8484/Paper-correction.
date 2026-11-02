@@ -1,0 +1,3 @@
+Q1. Photosynthesis is how green plants prepare glucose using sunlight, water and carbon dioxide. The chlorophyll in leaves captures light and oxygen is given out.
+Q2. The CPU is the brain of a computer and it executes instructions. It contains the ALU which does arithmetic, the control unit and registers for quick storage.
+Q3. An operating system is system software that manages hardware and software resources. Examples are Windows and Linux.

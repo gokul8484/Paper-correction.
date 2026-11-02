@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% block title %}New Exam · SmartEval{% endblock %}
+{% block content %}
+<h1>Create exam</h1>
+<form method="post" class="card" id="exam-form">
+  <input type="hidden" name="csrf" value="{{ csrf_token }}">
+  <div class="grid2">
+    <label>Exam title<input name="title" required value="{{ form.get('title','') }}"></label>
+    <label>Subject<input name="subject" required value="{{ form.get('subject','') }}"></label>
+  </div>
+  <h2>Questions</h2>
+  <div id="questions"></div>
+  <button type="button" class="btn secondary" id="add-q">+ Add question</button>
+  <hr>
+  <button class="btn">Save exam</button>
+</form>
+<template id="q-template">
+  <fieldset class="qbox">
+    <legend>Question <span class="qn"></span></legend>
+    <label>Question text<input name="q_text" required></label>
+    <label>Reference answer<textarea name="q_ref" rows="3" required></textarea></label>
+    <div class="grid2">
+      <label>Important keywords (comma separated)<input name="q_kw" placeholder="e.g. chlorophyll, sunlight"></label>
+      <label>Maximum marks<input name="q_max" type="number" step="0.5" min="0.5" max="100" value="5" required></label>
+    </div>
+    <button type="button" class="link remove-q">Remove</button>
+  </fieldset>
+</template>
+{% endblock %}

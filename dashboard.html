@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% block title %}Dashboard · SmartEval{% endblock %}
+{% block content %}
+<h1>Teacher Dashboard</h1>
+<div class="stats">
+  <div class="stat"><b>{{ stats.exams }}</b><span>Exams</span></div>
+  <div class="stat"><b>{{ stats.sheets }}</b><span>Answer sheets</span></div>
+  <div class="stat"><b>{{ stats.evaluated }}</b><span>Evaluated</span></div>
+  <div class="stat"><b>{{ stats.approved }}</b><span>Approved</span></div>
+</div>
+<div class="card">
+  <div class="row"><h2>Your exams</h2><a class="btn" href="{{ url_for('main.exam_new') }}">+ New exam</a></div>
+  {% if exams %}
+  <div class="table-wrap"><table>
+    <tr><th>Title</th><th>Subject</th><th>Questions</th><th>Sheets</th><th></th></tr>
+    {% for e in exams %}<tr><td>{{ e.title }}</td><td>{{ e.subject }}</td><td>{{ e.n_q }}</td><td>{{ e.n_sheets }}</td>
+      <td><a href="{{ url_for('main.exam_detail', exam_id=e.id) }}">Open</a></td></tr>{% endfor %}
+  </table></div>
+  {% else %}<p class="muted">No exams yet. Create your first exam.</p>{% endif %}
+</div>
+<div class="card">
+  <h2>Recent answer sheets</h2>
+  {% if sheets %}
+  <div class="table-wrap"><table>
+    <tr><th>Student</th><th>Roll</th><th>Exam</th><th>Total</th><th>Status</th><th></th></tr>
+    {% for s in sheets %}<tr><td>{{ s.student_name }}</td><td>{{ s.roll_no }}</td><td>{{ s.title }}</td>
+      <td>{{ '%g' % totals[s.id][0] }} / {{ '%g' % totals[s.id][1] }}</td>
+      <td><span class="badge {{ s.status }}">{{ s.status }}</span></td>
+      <td><a href="{{ url_for('main.results', sheet_id=s.id) if s.status != 'uploaded' else url_for('main.review', sheet_id=s.id) }}">View</a></td></tr>{% endfor %}
+  </table></div>
+  {% else %}<p class="muted">No answer sheets uploaded yet.</p>{% endif %}
+</div>
+{% endblock %}

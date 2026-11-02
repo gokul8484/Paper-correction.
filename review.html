@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Review OCR · SmartEval{% endblock %}
+{% block content %}
+<h1>Review extracted text</h1>
+<p class="muted">{{ sheet.student_name }} ({{ sheet.roll_no }}) · {{ exam.title }}</p>
+<p class="hint">Fix any OCR mistakes below, then click <b>Evaluate</b>. Empty box = unanswered.</p>
+<form method="post">
+  <input type="hidden" name="csrf" value="{{ csrf_token }}">
+  {% for r in rows %}
+  <div class="card"><h3>Q{{ r.number }}. {{ r.question }} <span class="badge">{{ '%g' % r.max_marks }} marks</span></h3>
+  <textarea name="text_{{ r.id }}" rows="4" placeholder="(no answer detected)">{{ r.text }}</textarea></div>
+  {% endfor %}
+  <details class="card"><summary>Show full raw OCR text</summary><pre>{{ sheet.raw_ocr }}</pre></details>
+  <button class="btn">Evaluate answers →</button>
+</form>
+{% endblock %}
